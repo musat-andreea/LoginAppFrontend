@@ -40,8 +40,6 @@ const Login = () => {
 
             if(response?.data?.access_token) {
                 login(response.data.access_token);
-                
-                // Cookies.set("jwt_authorization", response?.data?.access_token);
             }
 
         } catch(e) {

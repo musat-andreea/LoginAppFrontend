@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Login from './Components/Login/Login';
+import Logout from './Components/Logout/Logout';
 import Signup from './Components/Signup/Signup';
 import Navbar from './Components/Navbar/Navbar';
 import HomePage from './Components/HomePage/HomePage';
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path='/login'>
             <Login />
+          </Route>
+          <Route path='/logout'>
+            <Logout />
           </Route>
         </Switch>
       </Router>

@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const access_token = Cookies.get('jwt_authorization');
+
+        if(access_token) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, [])
+
     return (
         <>
            <nav> <div></div>
@@ -11,10 +24,13 @@ const Navbar = () => {
                             <a href="/homepage">Home</a>
                         </li>
                         <li>
-                            <a href="/signup">Sign Up</a>
+                            { isLoggedIn === false && <a href="/signup">Sign Up</a>}
                         </li>
                         <li>
-                            <a href="/login">Login</a>
+                            { isLoggedIn === false ?
+                                <a href="/login">Login</a> :
+                                <a href="/logout">Logout</a>
+                            }
                         </li>
                     </ul>
                 </div>

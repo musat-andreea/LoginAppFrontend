@@ -13,6 +13,7 @@ const HomePage = () => {
 
     const [lat, setLat] = useState(0);
     const [long, setLong] = useState(0);
+    const [checkUser, setCheckUser] = useState(false);
 
     const [user, setUser] = useState({
         id: 0,
@@ -43,8 +44,16 @@ const HomePage = () => {
     useEffect(() => {
         const access_token = Cookies.get('jwt_authorization');
 
-        const decoded = jwtDecode(access_token);
-        setUser(decoded);
+        if(access_token) {
+          setCheckUser(true);
+          const decoded = jwtDecode(access_token);
+          setUser(decoded);
+          
+        } else {
+          setCheckUser(false);
+        }
+
+        
     }, [])
 
     const getCoordinatestFromLocation = async (location) => {
@@ -75,60 +84,65 @@ const HomePage = () => {
 
     return (
         <>
-    <Container style={{background: 'none'}} className='mt-5'>
-      <Card className="user-card p-0 mb-0" style={{background: 'white'}}>
-        <Row>
-          <Col md={4} className="text-center">
-            <Card.Img
-              variant="top"
-              src="https://via.placeholder.com/150"
-              alt="User Avatar"
-              className="user-avatar"
-            />
-          </Col>
-          <Col md={8} >
-            <Card.Body>
-              <Card.Title className="text-center">User Profile</Card.Title>
-              <Card.Text>
-                <strong>Email:</strong> {user.email}
-                <br />
-                <strong>Name:</strong> {user.name}
-                <br />
-                <strong>Location:</strong> {user.location}
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">
-                Last updated: {new Date(user.updatedAt).toLocaleString()}
-              </small>
-            </Card.Footer>
-          </Col>
-        </Row>
-      </Card>
+        
+        { checkUser === true ?
+          <Container style={{background: 'none'}} className='mt-5'>
+            <Card className="user-card p-0 mb-0" style={{background: 'white'}}>
+              <Row>
+                <Col md={4} className="text-center">
+                  <Card.Img
+                    variant="top"
+                    src="https://via.placeholder.com/150"
+                    alt="User Avatar"
+                    className="user-avatar"
+                  />
+                </Col>
+                <Col md={8} >
+                  <Card.Body>
+                    <Card.Title className="text-center">User Profile</Card.Title>
+                    <Card.Text>
+                      <strong>Email:</strong> {user.email}
+                      <br />
+                      <strong>Name:</strong> {user.name}
+                      <br />
+                      <strong>Location:</strong> {user.location}
+                    </Card.Text>
+                  </Card.Body>
+                  <Card.Footer>
+                    <small className="text-muted">
+                      Last updated: {new Date(user.updatedAt).toLocaleString()}
+                    </small>
+                  </Card.Footer>
+                </Col>
+              </Row>
+            </Card>
 
-      <Card className="weather-card p-0">
-        <Row>
-          <Col md={4} className="text-center">
-            <Card.Img
-              variant="top"
-              src={weather.icon}
-              alt="Weather Icon"
-              className="weather-icon"
-            />
-          </Col>
-          <Col md={8}>
-            <Card.Body>
-              <Card.Title className="text-center">Weather Information</Card.Title>
-              <Card.Text>
-                <strong>Temperature:</strong> {weather.temperature} °C
-                <br />
-                <strong>Description:</strong> {weather.description}
-              </Card.Text>
-            </Card.Body>
-          </Col>
-        </Row>
-      </Card>
-    </Container>
+            <Card className="weather-card p-0">
+              <Row>
+                <Col md={4} className="text-center">
+                  <Card.Img
+                    variant="top"
+                    src={weather.icon}
+                    alt="Weather Icon"
+                    className="weather-icon"
+                  />
+                </Col>
+                <Col md={8}>
+                  <Card.Body>
+                    <Card.Title className="text-center">Weather Information</Card.Title>
+                    <Card.Text>
+                      <strong>Temperature:</strong> {weather.temperature} °C
+                      <br />
+                      <strong>Description:</strong> {weather.description}
+                    </Card.Text>
+                  </Card.Body>
+                </Col>
+              </Row>
+            </Card>
+          </Container> : 
+          <div className="text">Please login to access your information!</div>
+        }
+    
         </>
     );
    
